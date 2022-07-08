@@ -1,38 +1,235 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #0b0b0b;
+  --bg-secondary: #884ab2;
+  --primary-text: #fff;
+  --muted-text: #666;
+  --font: "Ubuntu", sans-serif;
+}
+
+body,
+input,
+textarea,
+button {
+  font-family: var(--font);
+}
+
+*:focus {
+  outline: none;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  background-color: var(--bg-primary);
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+main {
+  width: 100%;
+  height: 91vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+main > .left-container {
+  flex: 1 70%;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  padding-inline: 1.5rem;
+}
+
+main header {
+  padding: 1rem;
+}
+
+#tv {
+  width: 100%;
+  height: 100%;
+  margin-right: auto;
+}
+
+.panel {
+  flex: 0 30%;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-collapsed {
+  flex: 0 60px;
+  overflow: hidden;
+}
+
+.panel .panel-header .toggle-collapse-btn svg{
+  transition: none;
+}
+
+.panel.panel-collapsed .panel-header #select-panel-view,
+.panel.panel-collapsed .panel-header .select-panel-view-form,
+.panel.panel-collapsed .panel-header .filterBtn,
+.panel.panel-collapsed .stream-list,
+.panel.panel-collapsed .pageChange {
+  display: none;
+}
+
+.panel.panel-collapsed .panel-header .toggle-collapse-btn svg {
+  transform: rotate(180deg);
+}
+
+.panel .panel-header {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr 0.75fr;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  position: sticky;
+  top: 0;
+  right: 0;
+  padding-block: 1rem;
+  background-color: var(--bg-primary);
+  z-index: 99;
 }
 
-.App-link {
-  color: #61dafb;
+#select-panel-view {
+  color: var(--primary-text);
+  text-align: center;
+  padding: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.panel .MuiSvgIcon-root {
+  transition: all 0.3s ease;
+}
+
+.panel .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon,
+.panel .css-bpeome-MuiSvgIcon-root-MuiSelect-icon {
+  fill: var(--primary-text);
+}
+
+.panel .MuiSelect-select {
+  font-family: var(--font);
+}
+
+.panel
+  .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border: none;
+}
+
+body .css-6hp17o-MuiList-root-MuiMenu-list {
+  background-color: var(--bg-primary);
+}
+
+body .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
+  color: var(--primary-text);
+}
+
+body .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+  background-color: var(--bg-secondary) !important;
+}
+
+.panel button {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+}
+
+.panel button > div {
+  width: 100%;
+  height: 100%;
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.panel button > div > h3 {
+  overflow: hidden;
+  width: 100%;
+  max-width: 220px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.panel .stream-list::-webkit-scrollbar {
+  display: none;
+}
+
+.panel .stream-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px 0px;
+  padding-inline: 10px;
+  overflow: scroll;
+  max-height: 100%;
+}
+
+.panel .streamBtn {
+  background: none;
+  border: 2px solid var(--muted-text);
+  padding: 7px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  filter: grayscale(0.75);
+}
+
+.panel .streamBtn:hover {
+  opacity: 0.8;
+}
+
+.panel .streamBtn-active {
+  outline: 1px solid var(--bg-secondary);
+  border-color: var(--bg-secondary);
+  filter: grayscale(0);
+}
+
+.panel .streamBtn img {
+  border-radius: 5px;
+}
+
+.panel .streamBtn div h3 {
+  color: var(--primary-text);
+}
+
+.panel .streamBtn div p {
+  color: var(--muted-text);
+}
+
+.panel .streamBtn-active > div > p {
+  color: var(--bg-secondary);
+}
+
+.panel .pageChange {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 2rem;
+  margin-top: auto;
+}
+
+.panel .pageChange button {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+.panel .stream-chat {
+  padding-right: 5px;
+  border: none;
+}
+
+.css-lce9v1-MuiTabs-root .MuiTabs-indicator {
+  transition: all 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+  #tv {
+    width: 100%;
   }
 }
