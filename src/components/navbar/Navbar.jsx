@@ -1,5 +1,5 @@
 import React from "react";
-import { Tab, Tabs, Box } from "@mui/material";
+import { Tab, Tabs, Box, Tooltip } from "@mui/material";
 import { CellTower, OndemandVideo } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 
@@ -17,7 +17,7 @@ const StyledTabs = styled((props) => (
   "& .MuiTabs-indicatorSpan": {
     maxWidth: 40,
     width: "100%",
-    backgroundColor: "var(--bg-secondary)",
+    background: "var(--bg-secondary)",
   },
 });
 
@@ -29,7 +29,7 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
     marginRight: theme.spacing(1),
     color: "var(--primary-text)",
     "&.Mui-selected": {
-      color: "var(--bg-secondary)",
+      color: "var(--secondary-color)",
     },
     "&.Mui-focusVisible": {
       backgroundColor: "rgba(100, 95, 228, 0.32)",
@@ -40,21 +40,31 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
 const Navbar = ({ view, handleViewChange }) => {
   return (
     <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      className="navbar"
     >
-      <Box sx={{ bgcolor: "var(--bg-primary)" }}>
+      <Box>
         <StyledTabs
           value={view}
           onChange={handleViewChange}
           aria-label="Choose view"
         >
-          <StyledTab icon={<CellTower />} />
-          <StyledTab icon={<OndemandVideo />} />
+          <StyledTab
+            value="tv"
+            icon={
+              <Tooltip title="TV">
+                <CellTower />
+              </Tooltip>
+            }
+          />
+
+          <StyledTab
+            value="ondemand"
+            icon={
+              <Tooltip title="On Demand">
+                <OndemandVideo />
+              </Tooltip>
+            }
+          />
         </StyledTabs>
       </Box>
     </Box>

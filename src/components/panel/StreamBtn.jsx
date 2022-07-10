@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
-const StreamBtn = ({stream, index, activeStream, setActiveStream}) => {
+const StreamBtn = ({stream, activeStream, setActiveStream}) => {
   return (
-    <button className={`streamBtn ${activeStream && "streamBtn-active"}`} onClick={() => setActiveStream(index)}>
+    <button className={`streamBtn ${activeStream && "streamBtn-active"}`} onClick={() => setActiveStream(stream.id)}>
               <img
                 src={stream.thumbnail_url.replace(
                   /{width}.{height}/,
