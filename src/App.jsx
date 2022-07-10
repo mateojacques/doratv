@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import useAxios from "./customHooks/useAxios.ts";
-import { MAX_PANEL_STREAMS, GAME_ID } from "./utils/constants";
-import { Tv, Panel, Header, Navbar } from "./components";
+import { MAX_PANEL_STREAMS, GAME_ID, LANGUAGE } from "./utils/constants";
+import { Grid } from "@mui/material";
+import { Tv, Panel, Header, Navbar, ModalMessage } from "./components";
 import "./App.css";
 
 function App() {
   const [streams, setStreams] = useState([]);
   const [activeStream, setActiveStream] = useState(0);
+  const [currentQuantity, setCurrentQuantity] = useState(MAX_PANEL_STREAMS);
+  const [showModal, setShowModal] = useState(false);
 
-  const [view, setView] = useState(0);
+  const [view, setView] = useState("tv");
 
   const streamList = useRef(null);
   const { current: currentList } = streamList || undefined;
@@ -17,19 +20,29 @@ function App() {
   const { data, pagination } = response || {};
   const { cursor: currentPagination } = pagination || {};
 
-  function fetchStreams(cursor, target) {
+  function fetchStreams(
+    streamsQuantity = MAX_PANEL_STREAMS,
+    scrollToBottom = false
+  ) {
     fetchData({
-      url: `streams?game_id=${GAME_ID}&first=${MAX_PANEL_STREAMS}${
-        cursor && target ? `&${target}=${cursor}` : ""
-      }`,
+      url: `streams?game_id=${GAME_ID}&first=${streamsQuantity}&language=${LANGUAGE}`,
       method: "get",
     });
 
-    if (currentList) currentList.scroll(0, 0);
+    setCurrentQuantity(streamsQuantity);
+
+    if (currentList && scrollToBottom)
+      setTimeout(() => {
+        currentList.scroll(0, currentList.scrollHeight);
+      }, 500);
   }
 
   function handleViewChange(e, view) {
     setView(view);
+  }
+
+  function getActiveStreamById() {
+    return streams.find((stream) => stream.id === activeStream) || streams[0];
   }
 
   useEffect(() => {
@@ -37,28 +50,45 @@ function App() {
   }, [data]);
 
   useEffect(() => {
-    fetchStreams();
-  }, []);
+    fetchStreams(currentQuantity, false);
+  }, [activeStream]);
 
   return (
     <div className="App">
-      <main>
-        <div className="left-container">
-          <Header />
-          <Tv stream={streams[activeStream]} />
-        </div>
+      <Grid component="main" container sx={{ flexWrap: "nowrap" }}>
+        {view === "tv" && (
+          <>
+            <div className="left-container">
+              <Header setShowModal={setShowModal} />
+              <Tv
+                stream={getActiveStreamById()}
+                setActiveStream={setActiveStream}
+              />
+            </div>
 
-        <Panel
-          streams={streams}
-          activeStream={activeStream}
-          streamList={streamList}
-          setActiveStream={setActiveStream}
-          fetchStreams={fetchStreams}
-          currentPagination={currentPagination}
-        />
-      </main>
+            <Panel
+              streams={streams}
+              stream={getActiveStreamById()}
+              activeStream={activeStream}
+              streamList={streamList}
+              setActiveStream={setActiveStream}
+              fetchStreams={fetchStreams}
+              currentPagination={currentPagination}
+              loading={loading}
+            />
+          </>
+        )}
+      </Grid>
 
       <Navbar view={view} handleViewChange={handleViewChange} />
+
+      <ModalMessage
+        showModal={showModal}
+        setShowModal={setShowModal}
+        title="Lorem ipsum"
+        message="Phasellus rhoncus sem ultrices lectus ultricies congue."
+        size="12"
+      />
     </div>
   );
 }

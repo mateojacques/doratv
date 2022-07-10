@@ -1,33 +1,52 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { Tooltip } from "@mui/material";
 import StreamBtn from "./StreamBtn";
-import { Select, MenuItem, FormControl, Button } from "@mui/material";
 import {
-  KeyboardTab,
-  FilterList,
-  ArrowForward,
-  ArrowBack,
-} from "@mui/icons-material";
+  Select,
+  MenuItem,
+  FormControl,
+  Button,
+  CircularProgress,
+} from "@mui/material";
+import { KeyboardTab, FilterList, ArrowDownward } from "@mui/icons-material";
 import { Chat } from "../../components";
+import { LOAD_MORE_STREAMS_STEP } from "../../utils/constants";
 
 const Panel = ({
   streams,
+  stream,
   activeStream,
   streamList,
   setActiveStream,
   fetchStreams,
-  currentPagination,
+  loading,
 }) => {
   const [view, setView] = useState("schedule");
+  const [panelCollapsed, setPanelCollapsed] = useState(false);
 
-  const panel = useRef(null);
-  const {current: currentPanel} = panel || {};
+  const { length: streamsQuantity } = streams || [];
+
+  function toggleCollapsePanel() {
+    setPanelCollapsed(!panelCollapsed);
+  }
+
+  useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    isMobile ? setPanelCollapsed(true) : setPanelCollapsed(false);
+  }, []);
 
   return (
-    <div className="panel" ref={panel}>
+    <div className={`panel ${panelCollapsed && "panel-collapsed"}`}>
       <div className="panel-header">
-        <Button className="toggle-collapse-btn" disableRipple onClick={() => panel.current.classList.toggle("panel-collapsed")}>
-          <KeyboardTab htmlColor="#fff"/>
-        </Button>
+        <Tooltip title={panelCollapsed ? "Expand" : "Collapse"}>
+          <Button
+            className="toggle-collapse-btn"
+            disableRipple
+            onClick={() => toggleCollapsePanel()}
+          >
+            <KeyboardTab htmlColor="var(--primary-text)" />
+          </Button>
+        </Tooltip>
 
         <FormControl fullWidth className="select-panel-view-form">
           <Select
@@ -37,14 +56,17 @@ const Panel = ({
             inputProps={{ MenuProps: { disableScrollLock: true } }}
           >
             <MenuItem defaultChecked value="schedule">
-              Programación
+              Streams
             </MenuItem>
             <MenuItem value="chat">Chat</MenuItem>
           </Select>
         </FormControl>
-        <Button className="filterBtn" disableRipple>
-          <FilterList htmlColor="#fff" />
-        </Button>
+
+        <Tooltip title="Filter">
+          <Button className="filterBtn" disableRipple>
+            <FilterList htmlColor="var(--primary-text)" />
+          </Button>
+        </Tooltip>
       </div>
 
       {view === "schedule" && (
@@ -55,31 +77,38 @@ const Panel = ({
                 <StreamBtn
                   key={index}
                   stream={stream}
-                  index={index}
-                  activeStream={index === activeStream}
+                  activeStream={stream.id === activeStream}
                   setActiveStream={setActiveStream}
                 />
               ))}
+
+            {streamsQuantity <= 100 - LOAD_MORE_STREAMS_STEP &&
+              streamsQuantity >= LOAD_MORE_STREAMS_STEP && (
+                <div className="pageChange">
+                  <Button
+                    className="prevPage"
+                    onClick={() =>
+                      fetchStreams(
+                        streamsQuantity + LOAD_MORE_STREAMS_STEP,
+                        true
+                      )
+                    }
+                  >
+                    <ArrowDownward htmlColor="var(--primary-text)" />
+                  </Button>
+                </div>
+              )}
           </div>
 
-          <div className="pageChange">
-            <Button
-              className="prevPage"
-              onClick={() => fetchStreams(currentPagination, "before")}
-            >
-              <ArrowBack htmlColor="#fff" />
-            </Button>
-            <Button
-              className="nextPage"
-              onClick={() => fetchStreams(currentPagination, "after")}
-            >
-              <ArrowForward htmlColor="#fff" />
-            </Button>
-          </div>
+          {loading && (
+            <div className="loader-container">
+              <CircularProgress sx={{ color: "var(--secondary-color)" }} />
+            </div>
+          )}
         </>
       )}
 
-      {view === "chat" && <Chat stream={streams[activeStream]} />}
+      {view === "chat" && streams.length > 0 && <Chat stream={stream} />}
     </div>
   );
 };
