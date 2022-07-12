@@ -1,33 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Tooltip } from "@mui/material";
 import StreamBtn from "./StreamBtn";
 import {
   Select,
   MenuItem,
   FormControl,
-  Button,
+  IconButton,
   CircularProgress,
 } from "@mui/material";
 import { KeyboardTab, FilterList, ArrowDownward } from "@mui/icons-material";
-import { Chat } from "../../components";
+import { Chat, Filter } from "../../components";
 import { LOAD_MORE_STREAMS_STEP } from "../../utils/constants";
+import { TvContext } from "../contexts/tvContext";
 
-const Panel = ({
-  streams,
-  stream,
-  activeStream,
-  streamList,
-  setActiveStream,
-  fetchStreams,
-  loading,
-}) => {
-  const [view, setView] = useState("schedule");
+const Panel = () => {
+  const [view, setView] = useState("streams");
+  const [filterOpened, setFilterOpened] = useState(false);
   const [panelCollapsed, setPanelCollapsed] = useState(false);
+
+  const {
+    streams,
+    activeStream,
+    setActiveStream,
+    fetchStreams,
+    loading,
+    getActiveStreamById,
+  } = useContext(TvContext);
 
   const { length: streamsQuantity } = streams || [];
 
+  const streamList = useRef(null);
+  const { current: currentList } = streamList || undefined;
+
   function toggleCollapsePanel() {
     setPanelCollapsed(!panelCollapsed);
+  }
+
+  function handleChangeView(targetView, previousView) {
+    view === "filter" ? setView(previousView) : setView(targetView);
   }
 
   useEffect(() => {
@@ -36,40 +46,49 @@ const Panel = ({
   }, []);
 
   return (
-    <div className={`panel ${panelCollapsed && "panel-collapsed"}`}>
+    <div className={`panel ${panelCollapsed ? "panel-collapsed" : ""}`}>
       <div className="panel-header">
         <Tooltip title={panelCollapsed ? "Expand" : "Collapse"}>
-          <Button
+          <IconButton
             className="toggle-collapse-btn"
-            disableRipple
             onClick={() => toggleCollapsePanel()}
+            disableRipple
           >
             <KeyboardTab htmlColor="var(--primary-text)" />
-          </Button>
+          </IconButton>
         </Tooltip>
 
         <FormControl fullWidth className="select-panel-view-form">
           <Select
             id="select-panel-view"
             value={view}
-            onChange={({ target }) => setView(target.value)}
+            onChange={({ target }) => handleChangeView(target.value, "streams")}
             inputProps={{ MenuProps: { disableScrollLock: true } }}
           >
-            <MenuItem defaultChecked value="schedule">
+            <MenuItem defaultChecked value="streams">
               Streams
             </MenuItem>
             <MenuItem value="chat">Chat</MenuItem>
+            <MenuItem value="filter" sx={{ display: "none" }}>
+              Filters
+            </MenuItem>
           </Select>
         </FormControl>
 
-        <Tooltip title="Filter">
-          <Button className="filterBtn" disableRipple>
-            <FilterList htmlColor="var(--primary-text)" />
-          </Button>
-        </Tooltip>
+        {view !== "chat" && (
+          <Tooltip title="Filters">
+            <IconButton
+              className={`filterBtn ${filterOpened ? "filter-active" : ""}`}
+              disableRipple
+              onClick={() => setFilterOpened(!filterOpened)}
+            >
+              <FilterList htmlColor="var(--primary-text)" />
+            </IconButton>
+          </Tooltip>
+        )}
       </div>
 
-      {view === "schedule" && (
+      {view === "streams" && (
         <>
           <div className="stream-list" ref={streamList}>
             {streams &&
@@ -85,17 +104,18 @@ const Panel = ({
             {streamsQuantity <= 100 - LOAD_MORE_STREAMS_STEP &&
               streamsQuantity >= LOAD_MORE_STREAMS_STEP && (
                 <div className="pageChange">
-                  <Button
-                    className="prevPage"
+                  <IconButton
+                    className="load-more-btn"
                     onClick={() =>
                       fetchStreams(
                         streamsQuantity + LOAD_MORE_STREAMS_STEP,
-                        true
+                        true,
+                        currentList
                       )
                     }
                   >
                     <ArrowDownward htmlColor="var(--primary-text)" />
-                  </Button>
+                  </IconButton>
                 </div>
               )}
           </div>
@@ -105,10 +125,14 @@ const Panel = ({
               <CircularProgress sx={{ color: "var(--secondary-color)" }} />
             </div>
           )}
+
+          {filterOpened && <Filter className="panel-filter"/>}
         </>
       )}
 
-      {view === "chat" && streams.length > 0 && <Chat stream={stream} />}
+      {view === "chat" && streams.length > 0 && (
+        <Chat stream={getActiveStreamById()} />
+      )}
     </div>
   );
 };
