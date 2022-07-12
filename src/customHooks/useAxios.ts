@@ -1,8 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
-
 const mergeHeaders = (customHeaders: object | undefined) => {
   const headers: any = {
     Authorization: `Bearer ${process.env.REACT_APP_BEARER_TOKEN}`,
@@ -29,7 +27,14 @@ const useAxios = () => {
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchData = async ({ url, method, body, customHeaders }: any) => {
+  const fetchData = async ({
+    baseUrl,
+    url,
+    method,
+    body,
+    customHeaders,
+  }: any) => {
+    axios.defaults.baseURL = baseUrl;
     const headers = mergeHeaders(customHeaders);
 
     // Cleanup

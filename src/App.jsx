@@ -1,57 +1,23 @@
-import { useState, useEffect, useRef } from "react";
-import useAxios from "./customHooks/useAxios.ts";
-import { MAX_PANEL_STREAMS, GAME_ID, LANGUAGE } from "./utils/constants";
+import { useState, useEffect, useRef, useContext } from "react";
+import { TvContext } from "./components/contexts/tvContext";
 import { Grid } from "@mui/material";
 import { Tv, Panel, Header, Navbar, ModalMessage } from "./components";
 import "./App.css";
 
 function App() {
-  const [streams, setStreams] = useState([]);
-  const [activeStream, setActiveStream] = useState(0);
-  const [currentQuantity, setCurrentQuantity] = useState(MAX_PANEL_STREAMS);
+  const [view, setView] = useState("tv");
   const [showModal, setShowModal] = useState(false);
 
-  const [view, setView] = useState("tv");
-
-  const streamList = useRef(null);
-  const { current: currentList } = streamList || undefined;
-
-  const { response, error, loading, fetchData } = useAxios();
-  const { data, pagination } = response || {};
-  const { cursor: currentPagination } = pagination || {};
-
-  function fetchStreams(
-    streamsQuantity = MAX_PANEL_STREAMS,
-    scrollToBottom = false
-  ) {
-    fetchData({
-      url: `streams?game_id=${GAME_ID}&first=${streamsQuantity}&language=${LANGUAGE}`,
-      method: "get",
-    });
-
-    setCurrentQuantity(streamsQuantity);
-
-    if (currentList && scrollToBottom)
-      setTimeout(() => {
-        currentList.scroll(0, currentList.scrollHeight);
-      }, 500);
-  }
+  const { setActiveGame } = useContext(TvContext);
 
   function handleViewChange(e, view) {
     setView(view);
   }
 
-  function getActiveStreamById() {
-    return streams.find((stream) => stream.id === activeStream) || streams[0];
-  }
-
   useEffect(() => {
-    if (data) setStreams(data);
-  }, [data]);
-
-  useEffect(() => {
-    fetchStreams(currentQuantity, false);
-  }, [activeStream]);
+    const gameFromFilter = JSON.parse(localStorage.getItem("gameFromFilter"));
+    setActiveGame(gameFromFilter);
+  }, []);
 
   return (
     <div className="App">
@@ -60,22 +26,10 @@ function App() {
           <>
             <div className="left-container">
               <Header setShowModal={setShowModal} />
-              <Tv
-                stream={getActiveStreamById()}
-                setActiveStream={setActiveStream}
-              />
+              <Tv />
             </div>
 
-            <Panel
-              streams={streams}
-              stream={getActiveStreamById()}
-              activeStream={activeStream}
-              streamList={streamList}
-              setActiveStream={setActiveStream}
-              fetchStreams={fetchStreams}
-              currentPagination={currentPagination}
-              loading={loading}
-            />
+            <Panel />
           </>
         )}
       </Grid>

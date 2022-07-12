@@ -7,5 +7,5 @@ const TINBOY_ID = 195507443;
 
 export const MAX_PANEL_STREAMS = 20;
 export const LOAD_MORE_STREAMS_STEP = 20;
-export const GAME_ID = LOL_ID;
-export const LANGUAGE = "en";
+export const DEFAULT_GAME_ID = LOL_ID;
+export const DEFAULT_LANGUAGE = "en";

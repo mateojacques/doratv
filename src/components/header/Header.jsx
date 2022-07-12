@@ -15,10 +15,13 @@ const Header = ({setShowModal}) => {
       <IconButton
           onClick={() => setShowModal(true)}
           style={{
-            color: "var(--warning-color)"
+            color: "var(--warning-color)",
+            width: 60,
+            height: 60
           }}
+          disableRipple
         >
-          <span className="material-symbols-rounded f-s-28">
+          <span className="material-symbols-rounded">
             info
           </span>
         </IconButton>

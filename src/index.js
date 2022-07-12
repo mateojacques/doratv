@@ -1,12 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './App.css';
-import App from './App';
-import 'material-symbols';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./App.css";
+import App from "./App";
+import "material-symbols";
+import TvContextProvider from "./components/contexts/tvContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <TvContextProvider>
+      <App />
+    </TvContextProvider>
   </React.StrictMode>
 );
