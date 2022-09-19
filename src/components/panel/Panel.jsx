@@ -7,11 +7,12 @@ import {
   FormControl,
   IconButton,
   CircularProgress,
+  Icon
 } from "@mui/material";
-import { KeyboardTab, FilterList, ArrowDownward } from "@mui/icons-material";
+import { KeyboardTab, FilterList, ArrowDownward, SearchOff } from "@mui/icons-material";
 import { Chat, Filter } from "../../components";
 import { LOAD_MORE_STREAMS_STEP } from "../../utils/constants";
-import { TvContext } from "../contexts/tvContext";
+import { TvContext } from "../../contexts/tvContext";
 
 const Panel = () => {
   const [view, setView] = useState("streams");
@@ -42,11 +43,11 @@ const Panel = () => {
 
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    isMobile ? setPanelCollapsed(true) : setPanelCollapsed(false);
+    setPanelCollapsed(isMobile);
   }, []);
 
   return (
-    <div className={`panel ${panelCollapsed ? "panel-collapsed" : ""}`}>
+    <div className={`panel ${panelCollapsed && "panel-collapsed"}`}>
       <div className="panel-header">
         <Tooltip title={panelCollapsed ? "Expand" : "Collapse"}>
           <IconButton
@@ -91,7 +92,7 @@ const Panel = () => {
       {view === "streams" && (
         <>
           <div className="stream-list" ref={streamList}>
-            {streams &&
+            {streams && streams.length > 0 ? (
               streams.map((stream, index) => (
                 <StreamBtn
                   key={index}
@@ -99,7 +100,12 @@ const Panel = () => {
                   activeStream={stream.id === activeStream}
                   setActiveStream={setActiveStream}
                 />
-              ))}
+              ))
+            ) : (
+              <Icon component="div" sx={{ fontSize: "3rem", margin: "40px auto 0 auto" }}>
+                <SearchOff htmlColor="var(--muted-text)" fontSize="inherit"/>
+              </Icon>
+            )}
 
             {streamsQuantity <= 100 - LOAD_MORE_STREAMS_STEP &&
               streamsQuantity >= LOAD_MORE_STREAMS_STEP && (
@@ -126,7 +132,7 @@ const Panel = () => {
             </div>
           )}
 
-          {filterOpened && <Filter className="panel-filter"/>}
+          {filterOpened && <Filter className="panel-filter" />}
         </>
       )}
 

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useContext } from "react";
-import { TvContext } from "../contexts/tvContext";
+import { TvContext } from "../../contexts/tvContext";
 import { useMutationObserver } from "rooks";
+import { Grid, Typography } from "@mui/material";
+import { Icon } from "@mui/material";
+import { TvOff } from "@mui/icons-material";
 
 const Tv = () => {
   const { getActiveStreamById, setActiveStream } = useContext(TvContext);
@@ -30,9 +33,24 @@ const Tv = () => {
           scrolling="no"
         ></iframe>
       ) : (
-        ""
+        <Grid
+          container
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          margin="auto"
+          sx={{ gap: 3 }}
+        >
+          <Icon component="div" sx={{ fontSize: "8rem" }}>
+            <TvOff htmlColor="var(--muted-text)" fontSize="inherit"/>
+          </Icon>
+          <Typography variant="body" sx={{ color: "var(--primary-text)" }}>
+            No stream selected. Try changing your{" "}
+            <span style={{ color: "var(--secondary-color)" }}>filters</span> if
+            no streams are found.
+          </Typography>
+        </Grid>
       )}
-      {/* TODO Add Fallback */}
     </>
   );
 };

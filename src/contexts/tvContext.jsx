@@ -1,10 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import {
-  DEFAULT_GAME_ID,
   DEFAULT_LANGUAGE,
   MAX_PANEL_STREAMS,
-} from "../../utils/constants";
-import useAxios from "../../customHooks/useAxios.ts";
+} from "../utils/constants";
+import useAxios from "../customHooks/useAxios.ts";
 
 export const TvContext = createContext({});
 
@@ -32,9 +31,11 @@ const TvContextProvider = ({ children }) => {
   ) {
     fetchStreamsData({
       baseUrl: process.env.REACT_APP_TWITCH_API_BASE_URL,
-      url: `streams?game_id=${
-        activeGame ? activeGame.id : DEFAULT_GAME_ID
-      }&first=${streamsQuantity}&language=${activeLanguage}`,
+      url: `streams?${
+        activeGame ? `game_id=${activeGame.id}&` : ""
+      }first=${streamsQuantity}${
+        activeLanguage ? `&language=${activeLanguage}` : ""
+      }`,
       method: "get",
     });
 

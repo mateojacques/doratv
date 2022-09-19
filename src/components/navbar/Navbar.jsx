@@ -1,71 +1,54 @@
 import React from "react";
-import { Tab, Tabs, Box, Tooltip } from "@mui/material";
-import { CellTower, OndemandVideo } from "@mui/icons-material";
-import { styled } from "@mui/material/styles";
-
-const StyledTabs = styled((props) => (
-  <Tabs
-    {...props}
-    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
-  />
-))({
-  "& .MuiTabs-indicator": {
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "transparent",
-  },
-  "& .MuiTabs-indicatorSpan": {
-    maxWidth: 40,
-    width: "100%",
-    background: "var(--bg-secondary)",
-  },
-});
-
-const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
-  ({ theme }) => ({
-    textTransform: "none",
-    fontWeight: theme.typography.fontWeightRegular,
-    fontSize: theme.typography.pxToRem(15),
-    marginRight: theme.spacing(1),
-    color: "var(--primary-text)",
-    "&.Mui-selected": {
-      color: "var(--secondary-color)",
-    },
-    "&.Mui-focusVisible": {
-      backgroundColor: "rgba(100, 95, 228, 0.32)",
-    },
-  })
-);
+import { Box, Typography,Link } from "@mui/material";
+import { LinkedIn, GitHub, Mail, Language } from "@mui/icons-material";
 
 const Navbar = ({ view, handleViewChange }) => {
   return (
-    <Box
-      className="navbar"
-    >
-      <Box>
-        <StyledTabs
-          value={view}
-          onChange={handleViewChange}
-          aria-label="Choose view"
+    <Box className="navbar">
+      <Box display="flex" alignItems="center">
+        <Typography
+          variant="body"
+          sx={{
+            // color: "var(--primary-text)",
+            paddingRight: 1.5,
+            borderRight: "2px solid var(--secondary-color)",
+          }}
         >
-          <StyledTab
-            value="tv"
-            icon={
-              <Tooltip title="TV">
-                <CellTower />
-              </Tooltip>
-            }
-          />
-
-          <StyledTab
-            value="ondemand"
-            icon={
-              <Tooltip title="On Demand">
-                <OndemandVideo />
-              </Tooltip>
-            }
-          />
-        </StyledTabs>
+          Mateo Jacques - Web Developer
+        </Typography>
+        <Box
+          display="flex"
+          sx={{ gap: 2, paddingLeft: 1.5, lineHeihgt: "10px" }}
+        >
+          <Link
+            href="https://www.linkedin.com/in/mateoleonjacques"
+            target="_blank"
+            className="navbar__link"
+          >
+            <LinkedIn />
+          </Link>
+          <Link
+            href="https://www.github.com/mateojacques"
+            target="_blank"
+            className="navbar__link"
+          >
+            <GitHub />
+          </Link>
+          <Link
+            href="mailto:mateojacquesweb@gmail.com"
+            target="_blank"
+            className="navbar__link"
+          >
+            <Mail />
+          </Link>
+          <Link
+            href="https://mateojacquesweb.com"
+            target="_blank"
+            className="navbar__link"
+          >
+            <Language />
+          </Link>
+        </Box>
       </Box>
     </Box>
   );
