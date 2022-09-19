@@ -6,7 +6,7 @@ const Chat = ({ stream }) => {
       <iframe
         title={stream.user_login}
         className="stream-chat"
-        src={`https://www.twitch.tv/embed/${stream.user_login}/chat?darkpopout&parent=localhost`}
+        src={`https://www.twitch.tv/embed/${stream.user_login}/chat?darkpopout&parent=doratv.netlify.app`}
         height="100%"
         width="100%"
       ></iframe>

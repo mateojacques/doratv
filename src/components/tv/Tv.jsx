@@ -27,7 +27,7 @@ const Tv = () => {
           ref={tv}
           title="tv"
           id="tv"
-          src={`https://player.twitch.tv/?channel=${active_channel}&parent=localhost`}
+          src={`https://player.twitch.tv/?channel=${active_channel}&parent=doratv.netlify.app`}
           frameBorder="0"
           allowFullScreen={true}
           scrolling="no"
