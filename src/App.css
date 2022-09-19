@@ -497,4 +497,8 @@ body .panel.panel-collapsed .panel-filter-container {
   .panel.panel-collapsed {
     width: unset;
   }
+
+  h2.MuiTypography-h2{
+    font-size: 3rem;
+  }
 }
