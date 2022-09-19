@@ -386,6 +386,7 @@ body .MuiMenuItem-root.MuiMenuItem-gutters.Mui-selected.MuiButtonBase-root {
   backdrop-filter: blur(3px);
   color: var(--muted-text);
   transition: color 0.5s ease;
+  padding: 1rem;
 }
 
 .navbar .MuiBox-root .navbar__link {
