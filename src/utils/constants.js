@@ -1,11 +1,10 @@
-// GAME IDS
-const LOL_ID = 21779;
-const FORTNITE_ID = 33214;
-const FIFA_22_ID = 1869092879;
-const JUST_CHATTING_ID = 509658;
-const TINBOY_ID = 195507443;
+export const DEFAULT_GAME = {
+  id: "509658",
+  name: "Just Chatting",
+  box_art_url:
+    "https://static-cdn.jtvnw.net/ttv-boxart/509658-{width}x{height}.jpg",
+};
+export const DEFAULT_LANGUAGE = "en";
 
 export const MAX_PANEL_STREAMS = 20;
 export const LOAD_MORE_STREAMS_STEP = 20;
-export const DEFAULT_GAME_ID = LOL_ID;
-export const DEFAULT_LANGUAGE = "en";

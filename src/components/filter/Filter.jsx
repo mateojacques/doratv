@@ -8,11 +8,8 @@ import {
   ListItem,
   Select,
 } from "@mui/material";
-import { DEFAULT_LANGUAGE } from "../../utils/constants";
-import { getAll639_1, getEnglishName } from "all-iso-language-codes";
-import { TvContext } from "../contexts/tvContext";
-
-const language_codes = getAll639_1();
+import language_codes from "../../utils/languages.json";
+import { TvContext } from "../../contexts/tvContext";
 
 const Filter = () => {
   const {
@@ -26,8 +23,8 @@ const Filter = () => {
     fetchTwitchGame,
   } = useContext(TvContext);
   const [searchValue, setSearchValue] = useState("");
-  const [appliedFilters, setAppliedFilters] = useState({});
   const [autoCompleteValue, setautoCompleteValue] = useState("");
+  const [appliedFilters, setAppliedFilters] = useState([]);
 
   function handleChangeFilterInput(newValue) {
     setSearchValue(String(newValue));
@@ -39,6 +36,42 @@ const Filter = () => {
       setautoCompleteValue(String(newValue.label));
     }
   }
+
+  function sortArrayByString(a, b) {
+    let fa = a.name.toLowerCase(),
+      fb = b.name.toLowerCase();
+
+    if (fa < fb) {
+      return -1;
+    }
+    if (fa > fb) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function handleDeleteActiveFilter(filter) {
+    localStorage.removeItem(filter);
+    if (filter === "gameFromFilter") {
+      setActiveGame(null);
+      setAppliedFilters(appliedFilters.filter((i) => i !== "game"));
+    }
+    if (filter === "languageFromFilter") {
+      setActiveLanguage(null);
+      setAppliedFilters(appliedFilters.filter((i) => i !== "language"));
+    }
+  }
+
+  let deleteGameFilterProps = {};
+  let deleteLanguageFilterProps = {};
+
+  if (activeGame)
+    deleteGameFilterProps.onDelete = () =>
+      handleDeleteActiveFilter("gameFromFilter");
+
+  if (activeLanguage)
+    deleteLanguageFilterProps.onDelete = () =>
+      handleDeleteActiveFilter("languageFromFilter");
 
   useEffect(() => {
     if (searchValue) {
@@ -71,8 +104,17 @@ const Filter = () => {
   }, [twitchGame]);
 
   useEffect(() => {
-    if (activeGame) setAppliedFilters({ ...appliedFilters, activeGame });
-  }, [activeGame]);
+    if (activeGame && !appliedFilters.includes("game"))
+      setAppliedFilters([...appliedFilters, "game"]);
+  }, [appliedFilters, activeGame]);
+
+  useEffect(() => {
+    if (activeLanguage) {
+      localStorage.setItem("languageFromFilter", activeLanguage);
+      if (!appliedFilters.includes("language"))
+        setAppliedFilters([...appliedFilters, "language"]);
+    }
+  }, [activeLanguage]);
 
   return (
     <Box className="panel-filter-container" container>
@@ -86,32 +128,45 @@ const Filter = () => {
         sx={{ gap: 3 }}
         className="panel-filter"
       >
-        <ListItem
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            flexWrap: "wrap",
-            listStyle: "none",
-            p: 1,
-            borderRadius: 15,
-            gap: 1,
-          }}
-        >
-          <Chip
-            key={activeGame && activeGame.id}
-            label={activeGame && activeGame.name}
+        {appliedFilters.length > 0 && (
+          <ListItem
             sx={{
-              background: "var(--bg-secondary)",
+              display: "flex",
+              justifyContent: "flex-start",
+              flexWrap: "wrap",
+              listStyle: "none",
+              p: 1,
+              borderRadius: 15,
+              gap: 1,
             }}
-          />
-          <Chip
-            key={activeLanguage}
-            label={getEnglishName(activeLanguage)}
-            sx={{
-              background: "var(--bg-secondary)",
-            }}
-          />
-        </ListItem>
+          >
+            {activeGame && (
+              <Chip
+                key={activeGame.id}
+                label={activeGame.name}
+                sx={{
+                  background: "var(--bg-secondary)",
+                }}
+                {...deleteGameFilterProps}
+              />
+            )}
+
+            {activeLanguage && activeLanguage !== " " && (
+              <Chip
+                key={activeLanguage}
+                label={
+                  language_codes.find(
+                    (language) => language.code === activeLanguage
+                  ).name
+                }
+                sx={{
+                  background: "var(--bg-secondary)",
+                }}
+                {...deleteLanguageFilterProps}
+              />
+            )}
+          </ListItem>
+        )}
 
         <Autocomplete
           disablePortal
@@ -139,16 +194,18 @@ const Filter = () => {
 
         <Select
           id="filter-language"
-          value={activeLanguage || DEFAULT_LANGUAGE}
+          value={activeLanguage || " "}
           label="Age"
           onChange={(e) => setActiveLanguage(e.target.value)}
           sx={{ color: "var(--primary-text)" }}
         >
-          {language_codes.map((code) => (
-            <MenuItem key={code} value={code}>
-              {getEnglishName(code)}
-            </MenuItem>
-          ))}
+          {language_codes
+            .sort((a, b) => sortArrayByString(a, b))
+            .map(({ code, name }) => (
+              <MenuItem key={code} value={code}>
+                {name}
+              </MenuItem>
+            ))}
         </Select>
       </Box>
     </Box>

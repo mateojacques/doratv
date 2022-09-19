@@ -139,6 +139,7 @@ main #header h1 {
 
 .panel {
   flex: 0 30%;
+  min-width: 460px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -152,6 +153,7 @@ main #header h1 {
 .panel-collapsed {
   flex: 0 60px;
   overflow: hidden;
+  min-width: unset;
 }
 
 .panel .loader-container {
@@ -244,6 +246,18 @@ body .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
   width: 100%;
   display: flex;
   gap: 1rem;
+  position: relative;
+  /* padding-bottom: 25px; */
+}
+
+.panel button.streamBtn p.viewer_count {
+  color: var(--muted-text);
+}
+
+.panel button.streamBtn p.viewer_count::before {
+  content: "⬤";
+  color: #dc3545;
+  margin-right: 5px;
 }
 
 .panel button.filterBtn,
@@ -260,6 +274,14 @@ body .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.panel button.streamBtn > div > div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .panel button.streamBtn > div > h3 {
@@ -364,10 +386,21 @@ body .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
   justify-content: center;
   align-items: center;
   margin-top: auto;
-  padding-bottom: 0.7rem;
   border-top: 1px solid var(--muted-color);
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(3px);
+  color: var(--muted-text);
+  transition: color 0.5s ease;
+}
+
+.css-1ps4owl-MuiTypography-root-MuiLink-root.navbar__link {
+  line-height: 10px;
+  color: var(--muted-text);
+  transition: color 0.5s ease;
+}
+
+.css-1ps4owl-MuiTypography-root-MuiLink-root.navbar__link:hover {
+  color: var(--primary-text);
 }
 
 .MuiInput-root.MuiInput-underline::before,
@@ -394,10 +427,10 @@ body .MuiInputLabel-root.Mui-focused {
 body .panel-filter .MuiOutlinedInput-root {
   border-bottom: 1px solid var(--muted-color);
   border-radius: 0;
-  transition: border-color .3s ease;
+  transition: border-color 0.3s ease;
 }
 
-body .panel-filter .MuiOutlinedInput-root.Mui-focused{
+body .panel-filter .MuiOutlinedInput-root.Mui-focused {
   border-color: var(--secondary-color);
 }
 
@@ -421,7 +454,7 @@ body .panel-filter-container {
   backdrop-filter: blur(3px);
 }
 
-body .panel.panel-collapsed .panel-filter-container{
+body .panel.panel-collapsed .panel-filter-container {
   background: unset;
 }
 
@@ -431,7 +464,6 @@ body .panel.panel-collapsed .panel-filter-container{
   }
 
   .panel {
-    min-width: 460px;
     height: 92vh;
     position: fixed;
     top: 0;
