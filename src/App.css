@@ -204,11 +204,7 @@ main #header h1 {
 
 .panel .MuiSvgIcon-root {
   transition: all 0.3s ease;
-}
-
-.panel .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon,
-.panel .css-bpeome-MuiSvgIcon-root-MuiSelect-icon {
-  fill: var(--primary-text);
+  color: var(--primary-text);
 }
 
 .panel .MuiSelect-select {
@@ -221,20 +217,19 @@ main #header h1 {
   border: none;
 }
 
-body .css-6hp17o-MuiList-root-MuiMenu-list,
 body .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
   background: var(--bg-primary);
 }
 
-body .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+body .MuiOutlinedInput-notchedOutline {
   border: none;
 }
 
-body .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
+body .MuiMenuItem-root.MuiMenuItem-gutters.MuiButtonBase-root{
   color: var(--primary-text);
 }
 
-body .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+body .MuiMenuItem-root.MuiMenuItem-gutters.Mui-selected.MuiButtonBase-root {
   background: var(--bg-secondary) !important;
 }
 
@@ -393,13 +388,13 @@ body .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
   transition: color 0.5s ease;
 }
 
-.css-1ps4owl-MuiTypography-root-MuiLink-root.navbar__link {
+.navbar .MuiBox-root .navbar__link {
   line-height: 10px;
   color: var(--muted-text);
   transition: color 0.5s ease;
 }
 
-.css-1ps4owl-MuiTypography-root-MuiLink-root.navbar__link:hover {
+.navbar .MuiBox-root .navbar__link:hover {
   color: var(--primary-text);
 }
 
