@@ -46,8 +46,7 @@ function App() {
         showModal={showModal}
         setShowModal={setShowModal}
         title="Welcome!"
-        message="DoraTV is a custom Twitch client I made in order to explore and discover various streams related to the same game or activity. <br><br> Unfortunately, Twitch restricts a lot how the stream can be displayed on an external website, interrupting it every 10 minutes for 30 seconds, so if you are looking for a particular stream it's probably better to go to Twitch directly. <br><br>
-        <span style='color: var(--secondary-color);font-weight:700'>Working on multi stream view feature!</span>"
+        message="DoraTV is a custom Twitch client I made in order to explore and discover various streams related to the same game or activity. <br><br> <span style='color: var(--secondary-color);font-weight:700'>Working on multi stream view feature!</span>"
         size="12"
       />
     </div>
