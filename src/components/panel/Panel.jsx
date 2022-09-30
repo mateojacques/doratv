@@ -115,7 +115,7 @@ const Panel = () => {
                     onClick={() =>
                       fetchStreams(
                         streamsQuantity + LOAD_MORE_STREAMS_STEP,
-                        true,
+                        false,
                         currentList
                       )
                     }
