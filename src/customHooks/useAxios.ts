@@ -1,10 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import config from "../config/config";
+
+const { BEARER_TOKEN, CLIENT_ID } = config;
 
 const mergeHeaders = (customHeaders: object | undefined) => {
   const headers: any = {
-    Authorization: `Bearer ${process.env.REACT_APP_BEARER_TOKEN}`,
-    "Client-Id": process.env.REACT_APP_CLIENT_ID,
+    Authorization: `Bearer ${BEARER_TOKEN}`,
+    "Client-Id": CLIENT_ID,
     ...customHeaders,
   };
 

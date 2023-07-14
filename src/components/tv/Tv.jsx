@@ -4,6 +4,9 @@ import { useMutationObserver } from "rooks";
 import { Grid, Typography } from "@mui/material";
 import { Icon } from "@mui/material";
 import { TvOff } from "@mui/icons-material";
+import config from "../../config/config";
+
+const { PARENT_DOMAIN } = config;
 
 const Tv = () => {
   const { getActiveStreamById, setActiveStream } = useContext(TvContext);
@@ -27,11 +30,11 @@ const Tv = () => {
           ref={tv}
           title="tv"
           id="tv"
-          src={`https://player.twitch.tv/?channel=${active_channel}&parent=doratv.netlify.app`}
+          src={`https://player.twitch.tv/?channel=${active_channel}&parent=${PARENT_DOMAIN}`}
           frameBorder="0"
           allowFullScreen={true}
           scrolling="no"
-        ></iframe>
+        />
       ) : (
         <Grid
           container
@@ -42,7 +45,7 @@ const Tv = () => {
           sx={{ gap: 3 }}
         >
           <Icon component="div" sx={{ fontSize: "8rem" }}>
-            <TvOff htmlColor="var(--muted-text)" fontSize="inherit"/>
+            <TvOff htmlColor="var(--muted-text)" fontSize="inherit" />
           </Icon>
           <Typography variant="body" sx={{ color: "var(--primary-text)" }}>
             No stream selected. Try changing your{" "}

@@ -10,6 +10,9 @@ import {
 } from "@mui/material";
 import language_codes from "../../utils/languages.json";
 import { TvContext } from "../../contexts/tvContext";
+import config from "../../config/config";
+
+const { TWITCH_API_BASE_URL } = config;
 
 const Filter = () => {
   const {
@@ -76,7 +79,7 @@ const Filter = () => {
   useEffect(() => {
     if (searchValue) {
       fetchSearchResults({
-        baseUrl: `${process.env.REACT_APP_TWITCH_API_BASE_URL}`,
+        baseUrl: `${TWITCH_API_BASE_URL}`,
         method: "get",
         url: `/search/categories?query=${searchValue}`,
       });
@@ -86,7 +89,7 @@ const Filter = () => {
   useEffect(() => {
     if (autoCompleteValue && fetchTwitchGame) {
       fetchTwitchGame({
-        baseUrl: `${process.env.REACT_APP_TWITCH_API_BASE_URL}`,
+        baseUrl: `${TWITCH_API_BASE_URL}`,
         method: "get",
         url: `/games?name=${autoCompleteValue}`,
       });
