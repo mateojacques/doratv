@@ -2,8 +2,14 @@ import { useState, useEffect, useContext } from "react";
 import { TvContext } from "./contexts/tvContext";
 import { Grid } from "@mui/material";
 import { Tv, Panel, Header, Navbar, ModalMessage } from "./components";
-import { DEFAULT_GAME, DEFAULT_LANGUAGE } from "./utils/constants";
+import {
+  DEFAULT_GAME,
+  DEFAULT_LANGUAGE,
+  MODAL_INFO_MESSAGE,
+  MODAL_INFO_TITLE,
+} from "./utils/constants";
 import "./App.css";
+import { getDataFromLocalStorage } from "./utils/storage";
 
 function App() {
   const [view, setView] = useState("tv");
@@ -16,12 +22,11 @@ function App() {
   }
 
   useEffect(() => {
-    const gameFromFilter =
-      JSON.parse(localStorage.getItem("gameFromFilter")) || DEFAULT_GAME;
+    const gameFromFilter = getDataFromLocalStorage("gameFromFilter", true) || DEFAULT_GAME;
     setActiveGame(gameFromFilter);
 
     const languageFromFilter =
-      localStorage.getItem("languageFromFilter") || DEFAULT_LANGUAGE;
+      getDataFromLocalStorage("languageFromFilter") || DEFAULT_LANGUAGE;
     setActiveLanguage(languageFromFilter);
   }, []);
 
@@ -45,8 +50,8 @@ function App() {
       <ModalMessage
         showModal={showModal}
         setShowModal={setShowModal}
-        title="Welcome!"
-        message="DoraTV is a custom Twitch client I made in order to explore and discover various streams related to the same game or activity. <br><br> <span style='color: var(--secondary-color);font-weight:700'>Working on multi stream view feature!</span>"
+        title={MODAL_INFO_TITLE}
+        message={MODAL_INFO_MESSAGE}
         size="12"
       />
     </div>
