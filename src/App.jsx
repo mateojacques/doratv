@@ -20,11 +20,11 @@ function App() {
   }
 
   useEffect(() => {
-    const gameFromFilter = getDataFromLocalStorage("gameFromFilter", true) || DEFAULT_GAME;
+    const gameFromFilter = getDataFromLocalStorage("gameFromFilter", true);
     setActiveGame(gameFromFilter);
 
     const languageFromFilter =
-      getDataFromLocalStorage("languageFromFilter") || DEFAULT_LANGUAGE;
+      getDataFromLocalStorage("languageFromFilter");
     setActiveLanguage(languageFromFilter);
   }, []);
 
