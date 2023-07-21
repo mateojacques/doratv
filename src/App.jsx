@@ -3,8 +3,6 @@ import { TvContext } from "./contexts/tvContext";
 import { Grid } from "@mui/material";
 import { Tv, Panel, Header, Navbar, ModalMessage } from "./components";
 import {
-  DEFAULT_GAME,
-  DEFAULT_LANGUAGE,
   MODAL_INFO_MESSAGE,
   MODAL_INFO_TITLE,
 } from "./utils/constants";
