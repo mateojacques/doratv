@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { DEFAULT_LANGUAGE, MAX_PANEL_STREAMS } from "../utils/constants";
+import { MAX_PANEL_STREAMS } from "../utils/constants";
 import useAxios from "../customHooks/useAxios.ts";
 import config from "../config/config";
 
@@ -11,7 +11,7 @@ const TvContextProvider = ({ children }) => {
   const [streams, setStreams] = useState([]);
   const [activeStream, setActiveStream] = useState(0);
   const [activeGame, setActiveGame] = useState(null);
-  const [activeLanguage, setActiveLanguage] = useState(DEFAULT_LANGUAGE);
+  const [activeLanguage, setActiveLanguage] = useState();
   const [currentQuantity, setCurrentQuantity] = useState(MAX_PANEL_STREAMS);
 
   // Fetch streams
