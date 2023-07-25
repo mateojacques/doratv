@@ -5,27 +5,32 @@ import { Tv, Panel, Header, Navbar, ModalMessage } from "./components";
 import {
   DEFAULT_GAME,
   DEFAULT_LANGUAGE,
+  LIVE,
   MODAL_INFO_MESSAGE,
   MODAL_INFO_TITLE,
 } from "./utils/constants";
 import "./App.css";
 import { getDataFromLocalStorage } from "./utils/storage";
+import { TView } from "./interfaces/layoutInterfaces";
+import { IGame } from "./interfaces/categoryInterfaces";
 
 function App() {
-  const [view, setView] = useState("tv");
-  const [showModal, setShowModal] = useState(false);
+  //  TODO live a constante
+  const [view, setView] = useState<TView>(LIVE);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const { setActiveGame, setActiveLanguage } = useContext(TvContext);
 
-  function handleViewChange(e, view) {
+  function handleViewChange(e: any, view: TView) {
     setView(view);
   }
 
   useEffect(() => {
-    const gameFromFilter = getDataFromLocalStorage("gameFromFilter", true) || DEFAULT_GAME;
+    const gameFromFilter: IGame | null =
+      getDataFromLocalStorage("gameFromFilter", true) as IGame || DEFAULT_GAME;
     setActiveGame(gameFromFilter);
 
-    const languageFromFilter =
+    const languageFromFilter: string | null =
       getDataFromLocalStorage("languageFromFilter") || DEFAULT_LANGUAGE;
     setActiveLanguage(languageFromFilter);
   }, []);
@@ -33,7 +38,7 @@ function App() {
   return (
     <div className="App">
       <Grid component="main" container sx={{ flexWrap: "nowrap" }}>
-        {view === "tv" && (
+        {view === LIVE && (
           <>
             <div className="left-container">
               <Header setShowModal={setShowModal} />
@@ -52,7 +57,6 @@ function App() {
         setShowModal={setShowModal}
         title={MODAL_INFO_TITLE}
         message={MODAL_INFO_MESSAGE}
-        size="12"
       />
     </div>
   );
