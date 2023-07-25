@@ -33,6 +33,10 @@ const Filter = () => {
   const [autoCompleteValue, setAutoCompleteValue] = useState<any>("");
   const [appliedFilters, setAppliedFilters] = useState<any[]>([]);
 
+  const activeLanguageName = LANGUAGES.find(
+    ({ code }) => code === activeLanguage
+  )?.name;
+
   function handleChangeFilterInput(newValue: string) {
     setSearchValue(String(newValue));
   }
@@ -147,9 +151,7 @@ const Filter = () => {
             {activeLanguage && activeLanguage !== " " && (
               <Chip
                 key={activeLanguage}
-                label={
-                  LANGUAGES.find(({ code }) => code === "activeLanguage")?.name
-                }
+                label={activeLanguageName}
                 sx={{
                   background: "var(--bg-secondary)",
                 }}
