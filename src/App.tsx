@@ -15,7 +15,6 @@ import { TView } from "./interfaces/layoutInterfaces";
 import { IGame } from "./interfaces/categoryInterfaces";
 
 function App() {
-  //  TODO live a constante
   const [view, setView] = useState<TView>(LIVE);
   const [showModal, setShowModal] = useState<boolean>(false);
 
