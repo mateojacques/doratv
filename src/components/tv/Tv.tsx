@@ -9,18 +9,18 @@ import config from "../../config/config";
 const { PARENT_DOMAIN } = config;
 
 const Tv = () => {
-  const { getActiveStreamById, setActiveStream } = useContext(TvContext);
-  const stream = getActiveStreamById();
+  const { getActiveStream, setActiveStream } = useContext(TvContext);
+  const stream = getActiveStream();
 
-  const { user_login: active_channel } = stream || {};
+  const { user_login: active_channel = "" } = stream || {};
+
+  //  TODO resolve on automation of streams flow (DTV-12)
   const tv = useRef(null);
-
   const tvMutationCallback = () => console.log("changes in tv");
-
   useMutationObserver(tv, tvMutationCallback);
 
   useEffect(() => {
-    if (stream) setActiveStream(stream.id);
+    if (stream) setActiveStream(Number(stream?.id));
   }, [stream]);
 
   return (
@@ -47,7 +47,7 @@ const Tv = () => {
           <Icon component="div" sx={{ fontSize: "8rem" }}>
             <TvOff htmlColor="var(--muted-text)" fontSize="inherit" />
           </Icon>
-          <Typography variant="body" sx={{ color: "var(--primary-text)" }}>
+          <Typography variant="body1" sx={{ color: "var(--primary-text)" }}>
             No stream selected. Try changing your{" "}
             <span style={{ color: "var(--secondary-color)" }}>filters</span> if
             no streams are found.
