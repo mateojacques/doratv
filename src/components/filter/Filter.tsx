@@ -8,9 +8,12 @@ import {
   ListItem,
   Select,
 } from "@mui/material";
-import language_codes from "../../utils/languages.json";
+import LANGUAGES from "../../utils/languages";
 import { TvContext } from "../../contexts/tvContext";
 import config from "../../config/config";
+import { IAutocompleteValue } from "../../interfaces/formInterfaces";
+import { sortArrayByString } from "../../utils/sort";
+import { GET } from "../../utils/constants";
 
 const { TWITCH_API_BASE_URL } = config;
 
@@ -25,35 +28,28 @@ const Filter = () => {
     twitchGame,
     fetchTwitchGame,
   } = useContext(TvContext);
-  const [searchValue, setSearchValue] = useState("");
-  const [autoCompleteValue, setautoCompleteValue] = useState("");
-  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  // TODO refactor filters and its interfaces
+  const [autoCompleteValue, setAutoCompleteValue] = useState<any>("");
+  const [appliedFilters, setAppliedFilters] = useState<any[]>([]);
 
-  function handleChangeFilterInput(newValue) {
+  const activeLanguageName = LANGUAGES.find(
+    ({ code }) => code === activeLanguage
+  )?.name;
+
+  function handleChangeFilterInput(newValue: string) {
     setSearchValue(String(newValue));
   }
 
-  function handleChangeFilterAutoComplete(newValue) {
+  function handleChangeFilterAutoComplete(newValue: IAutocompleteValue) {
     if (newValue) {
       setSearchValue(newValue.label);
-      setautoCompleteValue(String(newValue.label));
+      setAutoCompleteValue(String(newValue.label));
     }
   }
 
-  function sortArrayByString(a, b) {
-    let fa = a.name.toLowerCase(),
-      fb = b.name.toLowerCase();
-
-    if (fa < fb) {
-      return -1;
-    }
-    if (fa > fb) {
-      return 1;
-    }
-    return 0;
-  }
-
-  function handleDeleteActiveFilter(filter) {
+  function handleDeleteActiveFilter(filter: string) {
+    // TODO refactor filters
     localStorage.removeItem(filter);
     if (filter === "gameFromFilter") {
       setActiveGame(null);
@@ -65,8 +61,8 @@ const Filter = () => {
     }
   }
 
-  let deleteGameFilterProps = {};
-  let deleteLanguageFilterProps = {};
+  let deleteGameFilterProps: any = {};
+  let deleteLanguageFilterProps: any = {};
 
   if (activeGame)
     deleteGameFilterProps.onDelete = () =>
@@ -89,8 +85,8 @@ const Filter = () => {
   useEffect(() => {
     if (autoCompleteValue && fetchTwitchGame) {
       fetchTwitchGame({
-        baseUrl: `${TWITCH_API_BASE_URL}`,
-        method: "get",
+        baseUrl: TWITCH_API_BASE_URL,
+        method: GET,
         url: `/games?name=${autoCompleteValue}`,
       });
     }
@@ -120,10 +116,8 @@ const Filter = () => {
   }, [activeLanguage]);
 
   return (
-    <Box className="panel-filter-container" container>
+    <Box className="panel-filter-container">
       <Box
-        container
-        item
         display="flex"
         flexDirection="column"
         justifyContent="start"
@@ -157,11 +151,7 @@ const Filter = () => {
             {activeLanguage && activeLanguage !== " " && (
               <Chip
                 key={activeLanguage}
-                label={
-                  language_codes.find(
-                    (language) => language.code === activeLanguage
-                  ).name
-                }
+                label={activeLanguageName}
                 sx={{
                   background: "var(--bg-secondary)",
                 }}
@@ -177,9 +167,13 @@ const Filter = () => {
           id="filter-autocomplete"
           isOptionEqualToValue={() => true}
           value={autoCompleteValue}
-          onChange={(e, newValue) => handleChangeFilterAutoComplete(newValue)}
+          onChange={(e, newValue: any) =>
+            handleChangeFilterAutoComplete(newValue)
+          }
           inputValue={searchValue || ""}
-          onInputChange={(e) => e && handleChangeFilterInput(e.target.value)}
+          onInputChange={(e: any) =>
+            e && handleChangeFilterInput(e.target.value)
+          }
           options={
             searchResults
               ? searchResults.map(({ id, name }) => ({ id, label: name }))
@@ -202,13 +196,13 @@ const Filter = () => {
           onChange={(e) => setActiveLanguage(e.target.value)}
           sx={{ color: "var(--primary-text)" }}
         >
-          {language_codes
-            .sort((a, b) => sortArrayByString(a, b))
-            .map(({ code, name }) => (
+          {LANGUAGES.sort((a, b) => sortArrayByString(a, b)).map(
+            ({ code, name }) => (
               <MenuItem key={code} value={code}>
                 {name}
               </MenuItem>
-            ))}
+            )
+          )}
         </Select>
       </Box>
     </Box>
