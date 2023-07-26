@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import { IStreamBtn } from "../../interfaces/liveInterfaces";
 
-const StreamBtn = ({ stream, activeStream, setActiveStream }) => {
+const StreamBtn = ({ stream, activeStream, setActiveStream }: IStreamBtn) => {
   return (
     <button
       className={`streamBtn ${activeStream && "streamBtn-active"}`}

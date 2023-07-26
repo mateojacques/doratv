@@ -1,18 +1,28 @@
 import React, { createContext, useState, useEffect } from "react";
 import { MAX_PANEL_STREAMS } from "../utils/constants";
-import useAxios from "../customHooks/useAxios.ts";
+import useAxios from "../customHooks/useAxios";
 import config from "../config/config";
+import {
+  IFetchStreamsResponseData,
+  ISearchCategoryRequest,
+  IStream,
+  IStreamsProps,
+  ITvContext,
+  ITwitchGameRequest,
+} from "../interfaces/liveInterfaces";
+import { IGame } from "../interfaces/categoryInterfaces";
 
 const { TWITCH_API_BASE_URL } = config;
 
-export const TvContext = createContext({});
+export const TvContext = createContext({} as ITvContext);
 
-const TvContextProvider = ({ children }) => {
-  const [streams, setStreams] = useState([]);
-  const [activeStream, setActiveStream] = useState(0);
-  const [activeGame, setActiveGame] = useState(null);
-  const [activeLanguage, setActiveLanguage] = useState();
-  const [currentQuantity, setCurrentQuantity] = useState(MAX_PANEL_STREAMS);
+const TvContextProvider = ({ children }: { children: any }) => {
+  const [streams, setStreams] = useState<IStream[]>([]);
+  const [activeStream, setActiveStream] = useState<number>(0);
+  const [activeGame, setActiveGame] = useState<IGame | null>(null);
+  const [activeLanguage, setActiveLanguage] = useState<string | null>(null);
+  const [currentQuantity, setCurrentQuantity] =
+    useState<number>(MAX_PANEL_STREAMS);
 
   // Fetch streams
 
@@ -21,13 +31,13 @@ const TvContextProvider = ({ children }) => {
     error: streamsError,
     loading: streamsLoading,
     fetchData: fetchStreamsData,
-  } = useAxios();
+  }: IFetchStreamsResponseData = useAxios();
   const { data: streamsResponseData } = streamsResponse || {};
 
   function fetchStreams(
     streamsQuantity = MAX_PANEL_STREAMS,
     scrollToBottom = false,
-    currentList
+    currentList?: any
   ) {
     fetchStreamsData({
       baseUrl: TWITCH_API_BASE_URL,
@@ -47,14 +57,14 @@ const TvContextProvider = ({ children }) => {
       }, 500);
   }
 
-  function getActiveStreamById() {
-    return streams.find((stream) => stream.id === activeStream) || streams[0];
+  function getActiveStream() {
+    return streams.find(({ id }) => Number(id) === activeStream) || streams[0];
   }
 
-  const streamsProps = {
+  const streamsProps: IStreamsProps = {
     streams,
     fetchStreams,
-    getActiveStreamById,
+    getActiveStream,
     activeStream,
     setActiveStream,
     streamsLoading,
@@ -80,7 +90,7 @@ const TvContextProvider = ({ children }) => {
     error: searchError,
     loading: searchLoading,
     fetchData: fetchSearchResults,
-  } = useAxios();
+  }: ISearchCategoryRequest = useAxios();
   const { data: searchResults } = searchResponse || [];
 
   const searchProps = {
@@ -98,7 +108,7 @@ const TvContextProvider = ({ children }) => {
     error: twitchGameError,
     loading: twitchGameLoading,
     fetchData: fetchTwitchGame,
-  } = useAxios();
+  }: ITwitchGameRequest = useAxios();
 
   const twitchGameProps = {
     twitchGame,

@@ -1,29 +1,31 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { TvContext } from "./contexts/tvContext";
 import { Grid } from "@mui/material";
 import { Tv, Panel, Header, Navbar, ModalMessage } from "./components";
-import {
-  MODAL_INFO_MESSAGE,
-  MODAL_INFO_TITLE,
-} from "./utils/constants";
+import { LIVE, MODAL_INFO_MESSAGE, MODAL_INFO_TITLE } from "./utils/constants";
 import "./App.css";
 import { getDataFromLocalStorage } from "./utils/storage";
+import { TView } from "./interfaces/layoutInterfaces";
+import { IGame } from "./interfaces/categoryInterfaces";
 
 function App() {
-  const [view, setView] = useState("tv");
-  const [showModal, setShowModal] = useState(false);
+  const [view, setView] = useState<TView>(LIVE);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const { setActiveGame, setActiveLanguage } = useContext(TvContext);
 
-  function handleViewChange(e, view) {
+  function handleViewChange(e: any, view: TView) {
     setView(view);
   }
 
   useEffect(() => {
-    const gameFromFilter = getDataFromLocalStorage("gameFromFilter", true);
+    const gameFromFilter: IGame | null = getDataFromLocalStorage(
+      "gameFromFilter",
+      true
+    ) as IGame;
     setActiveGame(gameFromFilter);
 
-    const languageFromFilter =
+    const languageFromFilter: string | null =
       getDataFromLocalStorage("languageFromFilter");
     setActiveLanguage(languageFromFilter);
   }, []);
@@ -31,7 +33,7 @@ function App() {
   return (
     <div className="App">
       <Grid component="main" container sx={{ flexWrap: "nowrap" }}>
-        {view === "tv" && (
+        {view === LIVE && (
           <>
             <div className="left-container">
               <Header setShowModal={setShowModal} />
@@ -50,7 +52,6 @@ function App() {
         setShowModal={setShowModal}
         title={MODAL_INFO_TITLE}
         message={MODAL_INFO_MESSAGE}
-        size="12"
       />
     </div>
   );
