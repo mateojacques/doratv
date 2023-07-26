@@ -1,14 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { TvContext } from "./contexts/tvContext";
 import { Grid } from "@mui/material";
 import { Tv, Panel, Header, Navbar, ModalMessage } from "./components";
-import {
-  DEFAULT_GAME,
-  DEFAULT_LANGUAGE,
-  LIVE,
-  MODAL_INFO_MESSAGE,
-  MODAL_INFO_TITLE,
-} from "./utils/constants";
+import { LIVE, MODAL_INFO_MESSAGE, MODAL_INFO_TITLE } from "./utils/constants";
 import "./App.css";
 import { getDataFromLocalStorage } from "./utils/storage";
 import { TView } from "./interfaces/layoutInterfaces";
@@ -25,12 +19,14 @@ function App() {
   }
 
   useEffect(() => {
-    const gameFromFilter: IGame | null =
-      getDataFromLocalStorage("gameFromFilter", true) as IGame || DEFAULT_GAME;
+    const gameFromFilter: IGame | null = getDataFromLocalStorage(
+      "gameFromFilter",
+      true
+    ) as IGame;
     setActiveGame(gameFromFilter);
 
     const languageFromFilter: string | null =
-      getDataFromLocalStorage("languageFromFilter") || DEFAULT_LANGUAGE;
+      getDataFromLocalStorage("languageFromFilter");
     setActiveLanguage(languageFromFilter);
   }, []);
 

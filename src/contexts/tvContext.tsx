@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { DEFAULT_LANGUAGE, MAX_PANEL_STREAMS } from "../utils/constants";
+import { MAX_PANEL_STREAMS } from "../utils/constants";
 import useAxios from "../customHooks/useAxios";
 import config from "../config/config";
 import {
@@ -20,9 +20,7 @@ const TvContextProvider = ({ children }: { children: any }) => {
   const [streams, setStreams] = useState<IStream[]>([]);
   const [activeStream, setActiveStream] = useState<number>(0);
   const [activeGame, setActiveGame] = useState<IGame | null>(null);
-  const [activeLanguage, setActiveLanguage] = useState<string | null>(
-    DEFAULT_LANGUAGE
-  );
+  const [activeLanguage, setActiveLanguage] = useState<string | null>(null);
   const [currentQuantity, setCurrentQuantity] =
     useState<number>(MAX_PANEL_STREAMS);
 
