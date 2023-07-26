@@ -42,24 +42,6 @@ export interface IFetchStreamsResponseData {
   fetchData({ baseUrl, url, method, body, customHeaders }: any): void;
 }
 
-export interface IStreamsProps {
-  streams: IStream[];
-  fetchStreams(
-    streamsQuantity: number,
-    scrollToBottom: boolean,
-    currentList?: any
-  ): void;
-  getActiveStream(): IStream;
-  activeStream: number;
-  setActiveStream(activeStream: number): void;
-  streamsLoading: boolean;
-  streamsError: Error;
-  activeGame: IGame | null;
-  setActiveGame(activeGame: IGame | null): void;
-  activeLanguage: string | null;
-  setActiveLanguage(activeLanguage: string | null): void;
-}
-
 export interface ITwitchCategory {
   box_art_url: string;
   id: string;
@@ -112,4 +94,20 @@ export interface ITwitchGameProps {
   fetchTwitchGame: ({ baseUrl, url, method, body, customHeaders }: any) => void;
 }
 
-export interface ITvContext extends IStreamsProps, ISearchCategoryProps {}
+export interface ITvContext {
+  streams: IStream[];
+  fetchStreams(
+    streamsQuantity: number,
+    scrollToBottom: boolean,
+    currentList?: any
+  ): void;
+  getActiveStream(): IStream;
+  activeStream: number;
+  setActiveStream(activeStream: number): void;
+  streamsLoading: boolean;
+  streamsError: Error;
+  activeGame: IGame | null;
+  setActiveGame(activeGame: IGame | null): void;
+  activeLanguage: string | null;
+  setActiveLanguage(activeLanguage: string | null): void;
+}
