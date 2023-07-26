@@ -1,3 +1,5 @@
+import config from "../config/config";
+
 export const GET = "get";
 
 export const MAX_PANEL_STREAMS = 20;
@@ -15,3 +17,11 @@ export const CHAT = "chat";
 export const FILTER = "filter";
 
 export const TABLET_MEDIA_QUERY = "(max-width: 768px)";
+
+const { PARENT_DOMAINS } = config;
+
+export const PARENT_DOMAINS_QUERY: string = PARENT_DOMAINS.map(
+  (parent: string) => `&parent=${parent}`
+)
+  .join()
+  .replace(",", "");

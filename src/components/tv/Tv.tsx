@@ -4,9 +4,7 @@ import { useMutationObserver } from "rooks";
 import { Grid, Typography } from "@mui/material";
 import { Icon } from "@mui/material";
 import { TvOff } from "@mui/icons-material";
-import config from "../../config/config";
-
-const { PARENT_DOMAIN } = config;
+import { PARENT_DOMAINS_QUERY } from "../../utils/constants";
 
 const Tv = () => {
   const { getActiveStream, setActiveStream } = useContext(TvContext);
@@ -30,7 +28,7 @@ const Tv = () => {
           ref={tv}
           title="tv"
           id="tv"
-          src={`https://player.twitch.tv/?channel=${active_channel}&parent=${PARENT_DOMAIN}`}
+          src={`https://player.twitch.tv/?channel=${active_channel}${PARENT_DOMAINS_QUERY}`}
           frameBorder="0"
           allowFullScreen={true}
           scrolling="no"
