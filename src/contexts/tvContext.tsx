@@ -8,7 +8,6 @@ import {
   IStream,
   IStreamsProps,
   ITvContext,
-  ITwitchGameRequest,
 } from "../interfaces/liveInterfaces";
 import { IGame } from "../interfaces/categoryInterfaces";
 
@@ -101,28 +100,11 @@ const TvContextProvider = ({ children }: { children: any }) => {
     fetchSearchResults,
   };
 
-  // Fetch game from Twitch
-
-  const {
-    response: twitchGame,
-    error: twitchGameError,
-    loading: twitchGameLoading,
-    fetchData: fetchTwitchGame,
-  }: ITwitchGameRequest = useAxios();
-
-  const twitchGameProps = {
-    twitchGame,
-    twitchGameError,
-    twitchGameLoading,
-    fetchTwitchGame,
-  };
-
   return (
     <TvContext.Provider
       value={{
         ...streamsProps,
         ...searchProps,
-        ...twitchGameProps,
       }}
     >
       {children}
