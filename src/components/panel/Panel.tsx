@@ -7,28 +7,40 @@ import {
   FormControl,
   IconButton,
   CircularProgress,
-  Icon
+  Icon,
 } from "@mui/material";
-import { KeyboardTab, FilterList, ArrowDownward, SearchOff } from "@mui/icons-material";
-import { Chat, Filter } from "../../components";
-import { LOAD_MORE_STREAMS_STEP } from "../../utils/constants";
+import {
+  KeyboardTab,
+  FilterList,
+  ArrowDownward,
+  SearchOff,
+} from "@mui/icons-material";
+import { Chat, Filter } from "..";
+import {
+  CHAT,
+  FILTER,
+  LOAD_MORE_STREAMS_STEP,
+  STREAMS,
+  TABLET_MEDIA_QUERY,
+} from "../../utils/constants";
 import { TvContext } from "../../contexts/tvContext";
+import { TPanelView } from "../../interfaces/layoutInterfaces";
 
 const Panel = () => {
-  const [view, setView] = useState("streams");
-  const [filterOpened, setFilterOpened] = useState(false);
-  const [panelCollapsed, setPanelCollapsed] = useState(false);
+  const [view, setView] = useState<TPanelView>(STREAMS);
+  const [filterOpened, setFilterOpened] = useState<boolean>(false);
+  const [panelCollapsed, setPanelCollapsed] = useState<boolean>(false);
 
   const {
     streams,
     activeStream,
     setActiveStream,
     fetchStreams,
-    loading,
-    getActiveStreamById,
+    streamsLoading,
+    getActiveStream,
   } = useContext(TvContext);
 
-  const { length: streamsQuantity } = streams || [];
+  const { length: streamsQuantity = 0 } = streams || [];
 
   const streamList = useRef(null);
   const { current: currentList } = streamList || undefined;
@@ -37,12 +49,12 @@ const Panel = () => {
     setPanelCollapsed(!panelCollapsed);
   }
 
-  function handleChangeView(targetView, previousView) {
-    view === "filter" ? setView(previousView) : setView(targetView);
+  function handleChangeView(targetView: TPanelView, previousView: TPanelView) {
+    view === FILTER ? setView(previousView) : setView(targetView);
   }
 
   useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const isMobile = window.matchMedia(TABLET_MEDIA_QUERY).matches;
     setPanelCollapsed(isMobile);
   }, []);
 
@@ -63,7 +75,9 @@ const Panel = () => {
           <Select
             id="select-panel-view"
             value={view}
-            onChange={({ target }) => handleChangeView(target.value, "streams")}
+            onChange={({ target }) =>
+              handleChangeView(target.value as TPanelView, STREAMS)
+            }
             inputProps={{ MenuProps: { disableScrollLock: true } }}
           >
             <MenuItem defaultChecked value="streams">
@@ -97,13 +111,16 @@ const Panel = () => {
                 <StreamBtn
                   key={index}
                   stream={stream}
-                  activeStream={stream.id === activeStream}
+                  activeStream={Number(stream?.id) === activeStream}
                   setActiveStream={setActiveStream}
                 />
               ))
             ) : (
-              <Icon component="div" sx={{ fontSize: "3rem", margin: "40px auto 0 auto" }}>
-                <SearchOff htmlColor="var(--muted-text)" fontSize="inherit"/>
+              <Icon
+                component="div"
+                sx={{ fontSize: "3rem", margin: "40px auto 0 auto" }}
+              >
+                <SearchOff htmlColor="var(--muted-text)" fontSize="inherit" />
               </Icon>
             )}
 
@@ -126,18 +143,18 @@ const Panel = () => {
               )}
           </div>
 
-          {loading && (
+          {streamsLoading && (
             <div className="loader-container">
               <CircularProgress sx={{ color: "var(--secondary-color)" }} />
             </div>
           )}
 
-          {filterOpened && <Filter className="panel-filter" />}
+          {filterOpened && <Filter />}
         </>
       )}
 
-      {view === "chat" && streams.length > 0 && (
-        <Chat stream={getActiveStreamById()} />
+      {view === CHAT && streams.length > 0 && (
+        <Chat stream={getActiveStream()} />
       )}
     </div>
   );
