@@ -1,34 +1,39 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { TvContext } from "./contexts/tvContext";
 import { Grid } from "@mui/material";
 import { Tv, Panel, Header, Navbar, ModalMessage } from "./components";
-import { DEFAULT_GAME, DEFAULT_LANGUAGE } from "./utils/constants";
+import { LIVE, MODAL_INFO_MESSAGE, MODAL_INFO_TITLE } from "./utils/constants";
 import "./App.css";
+import { getDataFromLocalStorage } from "./utils/storage";
+import { TView } from "./interfaces/layoutInterfaces";
+import { IGame } from "./interfaces/categoryInterfaces";
 
 function App() {
-  const [view, setView] = useState("tv");
-  const [showModal, setShowModal] = useState(false);
+  const [view, setView] = useState<TView>(LIVE);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const { setActiveGame, setActiveLanguage } = useContext(TvContext);
 
-  function handleViewChange(e, view) {
+  function handleViewChange(e: any, view: TView) {
     setView(view);
   }
 
   useEffect(() => {
-    const gameFromFilter =
-      JSON.parse(localStorage.getItem("gameFromFilter")) || DEFAULT_GAME;
+    const gameFromFilter: IGame | null = getDataFromLocalStorage(
+      "gameFromFilter",
+      true
+    ) as IGame;
     setActiveGame(gameFromFilter);
 
-    const languageFromFilter =
-      localStorage.getItem("languageFromFilter") || DEFAULT_LANGUAGE;
+    const languageFromFilter: string | null =
+      getDataFromLocalStorage("languageFromFilter");
     setActiveLanguage(languageFromFilter);
   }, []);
 
   return (
     <div className="App">
       <Grid component="main" container sx={{ flexWrap: "nowrap" }}>
-        {view === "tv" && (
+        {view === LIVE && (
           <>
             <div className="left-container">
               <Header setShowModal={setShowModal} />
@@ -45,9 +50,8 @@ function App() {
       <ModalMessage
         showModal={showModal}
         setShowModal={setShowModal}
-        title="Welcome!"
-        message="DoraTV is a custom Twitch client I made in order to explore and discover various streams related to the same game or activity. <br><br> <span style='color: var(--secondary-color);font-weight:700'>Working on multi stream view feature!</span>"
-        size="12"
+        title={MODAL_INFO_TITLE}
+        message={MODAL_INFO_MESSAGE}
       />
     </div>
   );

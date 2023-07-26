@@ -4,20 +4,21 @@ import { useMutationObserver } from "rooks";
 import { Grid, Typography } from "@mui/material";
 import { Icon } from "@mui/material";
 import { TvOff } from "@mui/icons-material";
+import { PARENT_DOMAINS_QUERY } from "../../utils/constants";
 
 const Tv = () => {
-  const { getActiveStreamById, setActiveStream } = useContext(TvContext);
-  const stream = getActiveStreamById();
+  const { getActiveStream, setActiveStream } = useContext(TvContext);
+  const stream = getActiveStream();
 
-  const { user_login: active_channel } = stream || {};
+  const { user_login: active_channel = "" } = stream || {};
+
+  //  TODO resolve on automation of streams flow (DTV-12)
   const tv = useRef(null);
-
   const tvMutationCallback = () => console.log("changes in tv");
-
   useMutationObserver(tv, tvMutationCallback);
 
   useEffect(() => {
-    if (stream) setActiveStream(stream.id);
+    if (stream) setActiveStream(Number(stream?.id));
   }, [stream]);
 
   return (
@@ -27,11 +28,11 @@ const Tv = () => {
           ref={tv}
           title="tv"
           id="tv"
-          src={`https://player.twitch.tv/?channel=${active_channel}&parent=doratv.netlify.app`}
+          src={`https://player.twitch.tv/?channel=${active_channel}${PARENT_DOMAINS_QUERY}`}
           frameBorder="0"
           allowFullScreen={true}
           scrolling="no"
-        ></iframe>
+        />
       ) : (
         <Grid
           container
@@ -42,9 +43,9 @@ const Tv = () => {
           sx={{ gap: 3 }}
         >
           <Icon component="div" sx={{ fontSize: "8rem" }}>
-            <TvOff htmlColor="var(--muted-text)" fontSize="inherit"/>
+            <TvOff htmlColor="var(--muted-text)" fontSize="inherit" />
           </Icon>
-          <Typography variant="body" sx={{ color: "var(--primary-text)" }}>
+          <Typography variant="body1" sx={{ color: "var(--primary-text)" }}>
             No stream selected. Try changing your{" "}
             <span style={{ color: "var(--secondary-color)" }}>filters</span> if
             no streams are found.
