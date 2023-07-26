@@ -4,9 +4,7 @@ import useAxios from "../customHooks/useAxios";
 import config from "../config/config";
 import {
   IFetchStreamsResponseData,
-  ISearchCategoryRequest,
   IStream,
-  IStreamsProps,
   ITvContext,
 } from "../interfaces/liveInterfaces";
 import { IGame } from "../interfaces/categoryInterfaces";
@@ -22,8 +20,6 @@ const TvContextProvider = ({ children }: { children: any }) => {
   const [activeLanguage, setActiveLanguage] = useState<string | null>(null);
   const [currentQuantity, setCurrentQuantity] =
     useState<number>(MAX_PANEL_STREAMS);
-
-  // Fetch streams
 
   const {
     response: streamsResponse,
@@ -60,20 +56,6 @@ const TvContextProvider = ({ children }: { children: any }) => {
     return streams.find(({ id }) => Number(id) === activeStream) || streams[0];
   }
 
-  const streamsProps: IStreamsProps = {
-    streams,
-    fetchStreams,
-    getActiveStream,
-    activeStream,
-    setActiveStream,
-    streamsLoading,
-    streamsError,
-    activeGame,
-    setActiveGame,
-    activeLanguage,
-    setActiveLanguage,
-  };
-
   useEffect(() => {
     if (streamsResponseData) setStreams(streamsResponseData);
   }, [streamsResponseData]);
@@ -82,29 +64,20 @@ const TvContextProvider = ({ children }: { children: any }) => {
     fetchStreams(currentQuantity, false);
   }, [activeStream, activeGame, activeLanguage]);
 
-  // Filter search
-
-  const {
-    response: searchResponse,
-    error: searchError,
-    loading: searchLoading,
-    fetchData: fetchSearchResults,
-  }: ISearchCategoryRequest = useAxios();
-  const { data: searchResults } = searchResponse || [];
-
-  const searchProps = {
-    searchResponse,
-    searchResults,
-    searchError,
-    searchLoading,
-    fetchSearchResults,
-  };
-
   return (
     <TvContext.Provider
       value={{
-        ...streamsProps,
-        ...searchProps,
+        streams,
+        fetchStreams,
+        getActiveStream,
+        activeStream,
+        setActiveStream,
+        streamsLoading,
+        streamsError,
+        activeGame,
+        setActiveGame,
+        activeLanguage,
+        setActiveLanguage,
       }}
     >
       {children}
