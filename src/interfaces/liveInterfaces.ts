@@ -112,7 +112,4 @@ export interface ITwitchGameProps {
   fetchTwitchGame: ({ baseUrl, url, method, body, customHeaders }: any) => void;
 }
 
-export interface ITvContext
-  extends IStreamsProps,
-    ISearchCategoryProps,
-    ITwitchGameProps {}
+export interface ITvContext extends IStreamsProps, ISearchCategoryProps {}

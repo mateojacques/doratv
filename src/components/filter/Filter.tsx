@@ -14,6 +14,8 @@ import config from "../../config/config";
 import { IAutocompleteValue } from "../../interfaces/formInterfaces";
 import { sortArrayByString } from "../../utils/sort";
 import { GET } from "../../utils/constants";
+import useAxios from "../../customHooks/useAxios";
+import { ITwitchGameRequest } from "../../interfaces/liveInterfaces";
 
 const { TWITCH_API_BASE_URL } = config;
 
@@ -25,13 +27,16 @@ const Filter = () => {
     setActiveLanguage,
     fetchSearchResults,
     searchResults,
-    twitchGame,
-    fetchTwitchGame,
   } = useContext(TvContext);
   const [searchValue, setSearchValue] = useState<string>("");
   // TODO refactor filters and its interfaces
   const [autoCompleteValue, setAutoCompleteValue] = useState<any>("");
   const [appliedFilters, setAppliedFilters] = useState<any[]>([]);
+
+  const {
+    response: twitchGame,
+    fetchData: fetchTwitchGame,
+  }: ITwitchGameRequest = useAxios();
 
   const activeLanguageName = LANGUAGES.find(
     ({ code }) => code === activeLanguage
@@ -83,7 +88,7 @@ const Filter = () => {
   }, [searchValue]);
 
   useEffect(() => {
-    if (autoCompleteValue && fetchTwitchGame) {
+    if (autoCompleteValue) {
       fetchTwitchGame({
         baseUrl: TWITCH_API_BASE_URL,
         method: GET,
