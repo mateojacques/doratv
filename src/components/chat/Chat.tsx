@@ -1,15 +1,12 @@
-import React from "react";
-import config from "../../config/config";
 import { IChat } from "../../interfaces/liveInterfaces";
-
-const { PARENT_DOMAIN } = config;
+import { PARENT_DOMAINS_QUERY } from "../../utils/constants";
 
 const Chat = ({ stream }: IChat) => (
   <div className="stream-chat-container">
     <iframe
       title={stream.user_login}
       className="stream-chat"
-      src={`https://www.twitch.tv/embed/${stream.user_login}/chat?darkpopout&parent=${PARENT_DOMAIN}`}
+      src={`https://www.twitch.tv/embed/${stream.user_login}/chat?darkpopout${PARENT_DOMAINS_QUERY}`}
       height="100%"
       width="100%"
     />
