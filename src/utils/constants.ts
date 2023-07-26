@@ -24,4 +24,4 @@ export const PARENT_DOMAINS_QUERY: string = PARENT_DOMAINS.map(
   (parent: string) => `&parent=${parent}`
 )
   .join()
-  .replace(",", "");
+  .replaceAll(",", "");
