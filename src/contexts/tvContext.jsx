@@ -11,7 +11,7 @@ const TvContextProvider = ({ children }) => {
   const [streams, setStreams] = useState([]);
   const [activeStream, setActiveStream] = useState(0);
   const [activeGame, setActiveGame] = useState(null);
-  const [activeLanguage, setActiveLanguage] = useState();
+  const [activeLanguage, setActiveLanguage] = useState(null);
   const [currentQuantity, setCurrentQuantity] = useState(MAX_PANEL_STREAMS);
 
   // Fetch streams
