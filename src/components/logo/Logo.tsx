@@ -108,7 +108,7 @@ const Logo = ({ color }: ILogo) => (
       ></path>
     </svg>
 
-    <h1>dora.tv</h1>
+    <h1>DoraTV</h1>
   </a>
 );
 
