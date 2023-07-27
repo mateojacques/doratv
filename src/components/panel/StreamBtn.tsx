@@ -4,7 +4,7 @@ const StreamBtn = ({ stream, activeStream, setActiveStream }: IStreamBtn) => {
   return (
     <button
       className={`streamBtn ${activeStream && "streamBtn-active"}`}
-      onClick={() => setActiveStream(stream.id)}
+      onClick={() => setActiveStream(Number(stream?.id))}
     >
       <img
         src={stream.thumbnail_url.replace(/{width}.{height}/, "180x100")}
