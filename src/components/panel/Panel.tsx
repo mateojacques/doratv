@@ -45,12 +45,10 @@ const Panel = () => {
   const streamList = useRef(null);
   const { current: currentList } = streamList || undefined;
 
-  function toggleCollapsePanel() {
-    setPanelCollapsed(!panelCollapsed);
-  }
+  const toggleCollapsePanel = () => {setPanelCollapsed(!panelCollapsed);}
 
-  function handleChangeView(targetView: TPanelView, previousView: TPanelView) {
-    view === FILTER ? setView(previousView) : setView(targetView);
+  const handleChangeView = (targetView: TPanelView, previousView: TPanelView) =>
+    {view === FILTER ? setView(previousView) : setView(targetView);
   }
 
   useEffect(() => {
