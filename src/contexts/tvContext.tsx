@@ -53,7 +53,7 @@ const TvContextProvider = ({ children }: { children: any }) => {
   }
 
   const getActiveStream = () => {
-    return streams.find(({ id }) => Number(id) === activeStream) || streams[0];
+      return streams.find(({ id }) => Number(id) === activeStream) || streams[0];
   }
 
   useEffect(() => {
