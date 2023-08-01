@@ -46,18 +46,18 @@ const Filter = () => {
     ({ code }) => code === activeLanguage
   )?.name;
 
-  function handleChangeFilterInput(newValue: string) {
+  const handleChangeFilterInput = (newValue: string) =>{
     setSearchValue(String(newValue));
   }
 
-  function handleChangeFilterAutoComplete(newValue: IAutocompleteValue) {
+  const handleChangeFilterAutoComplete = (newValue: IAutocompleteValue) => {
     if (newValue) {
       setSearchValue(newValue.label);
       setAutoCompleteValue(String(newValue.label));
     }
   }
 
-  function handleDeleteActiveFilter(filter: string) {
+  const handleDeleteActiveFilter = (filter: string) =>{
     // TODO refactor filters
     localStorage.removeItem(filter);
     if (filter === "gameFromFilter") {

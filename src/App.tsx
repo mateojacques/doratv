@@ -8,13 +8,13 @@ import { getDataFromLocalStorage } from "./utils/storage";
 import { TView } from "./interfaces/layoutInterfaces";
 import { IGame } from "./interfaces/categoryInterfaces";
 
-function App() {
+const App =() => {
   const [view, setView] = useState<TView>(LIVE);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const { setActiveGame, setActiveLanguage } = useContext(TvContext);
 
-  function handleViewChange(e: any, view: TView) {
+  const handleViewChange = (e: any, view: TView) =>{
     setView(view);
   }
 

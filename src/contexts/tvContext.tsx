@@ -29,11 +29,11 @@ const TvContextProvider = ({ children }: { children: any }) => {
   }: IFetchStreamsResponseData = useAxios();
   const { data: streamsResponseData } = streamsResponse || {};
 
-  function fetchStreams(
+  const fetchStreams = (
     streamsQuantity = MAX_PANEL_STREAMS,
     scrollToBottom = false,
     currentList?: any
-  ) {
+  ) => {
     fetchStreamsData({
       baseUrl: TWITCH_API_BASE_URL,
       url: `streams?${
@@ -52,8 +52,8 @@ const TvContextProvider = ({ children }: { children: any }) => {
       }, 500);
   }
 
-  function getActiveStream() {
-    return streams.find(({ id }) => Number(id) === activeStream) || streams[0];
+  const getActiveStream = () => {
+      return streams.find(({ id }) => Number(id) === activeStream) || streams[0];
   }
 
   useEffect(() => {
